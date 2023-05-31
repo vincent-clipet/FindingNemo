@@ -14,9 +14,9 @@ ENTITY_FISH_COUNT = 10
 ###########
 
 import random
-from gamegrid import GameGrid as Grid
-from entity import Shark
-from entity import Fish
+from src.gamegrid import GameGrid as Grid
+from src.entity import Shark
+from src.entity import Fish
 
 
 

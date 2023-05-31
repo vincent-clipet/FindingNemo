@@ -1,6 +1,6 @@
-from entity import Shark as Shark
-from entity import Fish as Fish
-from entity import Entity as Entity
+# from .entity import Shark as Shark
+# from entity import Fish as Fish
+from .entity import Entity as Entity
 
 
 
