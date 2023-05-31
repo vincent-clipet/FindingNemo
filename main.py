@@ -15,8 +15,8 @@ ENTITY_FISH_COUNT = 10
 
 import random
 from gamegrid import GameGrid as Grid
-from shark import Shark as Shark
-from fish import Fish as Fish
+from entity import Shark
+from entity import Fish
 
 
 
@@ -37,7 +37,6 @@ g = Grid(GRID_WIDTH, GRID_HEIGHT)
 
 for i in range(1, ENTITY_SHARK_COUNT):
 	rand_x, rand_y = get_random_xy(GRID_WIDTH, GRID_HEIGHT)
-	print("", rand_x, " - ", rand_y)
 	g.grid[rand_y][rand_x] = Shark()
 
 for i in range(1, ENTITY_FISH_COUNT):

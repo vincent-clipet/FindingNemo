@@ -1,15 +1,37 @@
-from enums import EntityTypes as EntityTypes
-
-class Entity():
-
-
-    type = None
+from enum import Enum
+import abc
 
 
-    def __init__(self, type: EntityTypes):
-        if type == 1:
-            self.type = type
-            
-            
+
+
+
+class Entity(abc.ABC):
+    pass
+
+    @abc.abstractmethod
     def draw(self):
-        return "."
+        pass
+
+
+
+
+
+class Fish(Entity):
+
+    def __init__(self):
+        super().__init__
+
+    def draw(self):
+        return ">"
+
+
+
+
+
+class Shark(Entity):
+
+    def __init__(self):
+        super().__init__()
+
+    def draw(self):
+        return "X"
