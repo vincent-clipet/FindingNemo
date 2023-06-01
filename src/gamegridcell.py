@@ -34,7 +34,6 @@ class GameGridCell():
     def is_empty(self):
         return self.entity is None
     def is_fish(self):
-
         return isinstance(self.entity, Fish)
     def is_shark(self):
         return isinstance(self.entity, Shark)

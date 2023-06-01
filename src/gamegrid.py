@@ -10,9 +10,6 @@ import random
 
 
 
-
-
-
 class GameGrid():
 
     
@@ -31,18 +28,24 @@ class GameGrid():
 
     def get_random_xy(self):
         return random.randint(0, self.width - 1), random.randint(0, self.height - 1)
-    
-    def random_fill_sharks(self, shark_number, max_energy, energy_gain):
-        for i in range(0, shark_number):
-            rand_x, rand_y = self.get_random_xy()
-            cell = self.get_cell(rand_x, rand_y)
-            cell.set_entity(Shark(max_energy, energy_gain))
 
-    def random_fill_fishs(self, fish_number, birth_interval):
+    def random_fill_sharks(self, shark_number, energy_gain, base_energy, birth_interval, max_energy):
+        for i in range(0, shark_number):
+            while True:
+                rand_x, rand_y = self.get_random_xy()
+                cell = self.get_cell(rand_x, rand_y)
+                if cell.is_empty():
+                    cell.set_entity(Shark(energy_gain, base_energy, birth_interval, max_energy))
+                    break
+
+    def random_fill_fishs(self, fish_number, birth_interval, death_age):
         for i in range(0, fish_number):
-            rand_x, rand_y = self.get_random_xy()
-            cell = self.get_cell(rand_x, rand_y)
-            cell.set_entity(Fish(birth_interval))
+            while True:
+                rand_x, rand_y = self.get_random_xy()
+                cell = self.get_cell(rand_x, rand_y)
+                if cell.is_empty():
+                    cell.set_entity(Fish(birth_interval, death_age))
+                    break
 
 
 
@@ -57,6 +60,19 @@ class GameGrid():
             line += "|"
             print(line)
         print("-" * (self.width+2))
+
+    def draw_console_buffered(self):
+        buffer = ""
+        buffer += "-" * (self.width+2)
+
+        for y in range(self.height):
+            buffer += "|"
+            for x in range(self.width):
+                value = self.get_cell(x, y)
+                buffer += value.draw()
+            buffer += "\n"
+        buffer += "-" * (self.width+2)
+        print(buffer)
     
 
 
@@ -66,7 +82,39 @@ class GameGrid():
     def set_cell(self, cell, x, y):
         self.grid[y % self.height][x % self.width] = cell
 
+
+
+    # get a list of currently available cells
+    def get_surrounding_free_cells(self, x, y):
+        free_cells = []
+        surrounding_cells = self.get_surroundings(x, y)
+        for i in range(0, len(surrounding_cells)):
+            adjacent_cell = surrounding_cells[i]
+            if adjacent_cell.is_empty():
+                free_cells.append(adjacent_cell)
+        return free_cells
     
+    # get a list of nearby fishes (N-S-E-W)
+    def get_surrounding_fishs(self, x, y):
+        fish_cells = []
+        surrounding_cells = self.get_surroundings(x, y)
+        for i in range(0, len(surrounding_cells)):
+            adjacent_cell = surrounding_cells[i]
+            if adjacent_cell.is_fish():
+                fish_cells.append(adjacent_cell)
+        return fish_cells
+    
+    # get a list of nearby sharks (N-S-E-W)
+    def get_surrounding_sharks(self, x, y):
+        shark_cells = []
+        surrounding_cells = self.get_surroundings(x, y)
+        for i in range(0, len(surrounding_cells)):
+            adjacent_cell = surrounding_cells[i]
+            if adjacent_cell.is_shark():
+                shark_cells.append(adjacent_cell)
+        return shark_cells
+
+    # get a list of all 4 neighbours (N-S-E-W)
     def get_surroundings(self, x, y):
         ret = []
         ret.append(self.get_cell(x, y-1)) # North
@@ -76,7 +124,6 @@ class GameGrid():
         return ret
     
 
-
     def update(self):
         self.turn += 1
         for y in range(self.height):
@@ -85,11 +132,5 @@ class GameGrid():
                 # empty cell
                 if cell.is_empty():
                     continue
-                
-                # Fish
-                if cell.is_fish():
-                    cell.entity.update(
-                        self,
-                        cell,
-                        self.get_surroundings(cell.x, cell.y)
-                    )
+                # Update
+                cell.entity.update(self, cell)
