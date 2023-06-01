@@ -29,8 +29,8 @@ import random
 import os
 import time
 from src.gamegrid import GameGrid as GameGrid
-from src.entity import Shark
-from src.entity import Fish
+from src.shark import Shark
+from src.fish import Fish
 
 
 

@@ -1,4 +1,6 @@
-from .entity import Entity, Fish, Shark
+from .entity import Entity
+from .fish import Fish
+from .shark import Shark
 
 
 class GameGridCell():

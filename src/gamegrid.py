@@ -1,9 +1,9 @@
 # from .entity import Shark as Shark
 # from entity import Fish as Fish
 from .gamegridcell import GameGridCell
-from .entity import Entity as Entity
-from .entity import Shark as Shark
-from .entity import Fish as Fish
+from .entity import Entity
+from .shark import Shark
+from .fish import Fish
 import random
 
 
