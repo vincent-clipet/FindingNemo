@@ -2,10 +2,18 @@
 # CONFIG #
 ##########
 
+REFRESH_SPEED = 0.5
+CLEAR_EACH_FRAME = True
+
 GRID_WIDTH = 60
 GRID_HEIGHT = 15
+
 ENTITY_SHARK_COUNT = 5
-ENTITY_FISH_COUNT = 10
+ENTITY_SHARK_MAX_ENERGY = 10
+ENTITY_SHARK_ENERGY_GAIN = 4
+
+ENTITY_FISH_COUNT = 1
+ENTITY_FISH_BIRTH_INTERVAL = 5
 
 
 
@@ -14,7 +22,9 @@ ENTITY_FISH_COUNT = 10
 ###########
 
 import random
-from src.gamegrid import GameGrid as Grid
+import os
+import time
+from src.gamegrid import GameGrid as GameGrid
 from src.entity import Shark
 from src.entity import Fish
 
@@ -24,8 +34,7 @@ from src.entity import Fish
 # FUNCTIONS #
 #############
 
-def get_random_xy(max_x, max_y):
-	return random.randint(0, max_x - 1), random.randint(0, max_y - 1)
+
 
 
 
@@ -33,16 +42,17 @@ def get_random_xy(max_x, max_y):
 # RUN #
 #######
 
-g = Grid(GRID_WIDTH, GRID_HEIGHT)
-
-for i in range(1, ENTITY_SHARK_COUNT):
-	rand_x, rand_y = get_random_xy(GRID_WIDTH, GRID_HEIGHT)
-	g.grid[rand_y][rand_x] = Shark()
-
-for i in range(1, ENTITY_FISH_COUNT):
-	rand_x, rand_y = get_random_xy(GRID_WIDTH, GRID_HEIGHT)
-	g.grid[rand_y][rand_x] = Fish()
+g = GameGrid(GRID_WIDTH, GRID_HEIGHT)
+g.random_fill_sharks(ENTITY_SHARK_COUNT, ENTITY_SHARK_MAX_ENERGY, ENTITY_SHARK_ENERGY_GAIN)
+g.random_fill_fishs(ENTITY_FISH_COUNT, ENTITY_FISH_BIRTH_INTERVAL)
 
 
-g.draw_console()
+
+while True:
+	if CLEAR_EACH_FRAME: os.system("cls")
+	print("turn = ", g.turn)
+	g.update()
+	g.draw_console()
+	time.sleep(REFRESH_SPEED)
+
 
