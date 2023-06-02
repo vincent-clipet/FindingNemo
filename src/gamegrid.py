@@ -1,5 +1,6 @@
 # from .entity import Shark as Shark
 # from entity import Fish as Fish
+from .gui_tkinter import GuiTkinter
 from .gamegridcell import GameGridCell
 from .entity import Entity
 from .shark import Shark
@@ -74,9 +75,20 @@ class GameGrid():
         buffer += "-" * (self.width+2)
         print(buffer)
     
+    def draw_tkinter(self, gui: GuiTkinter):
+        gui.update_turn(self.turn)
+        for y in range(self.height):
+            for x in range(self.width):
+                value = self.get_cell(x, y)
+                if value.is_fish():
+                    gui.draw_fish(x, y)
+                elif value.is_shark():
+                    gui.draw_shark(x, y)
+                elif value.is_empty():
+                    gui.draw_water(x, y)
 
 
-    def get_cell(self, x, y):
+    def get_cell(self, x, y) -> GameGridCell: 
         return self.grid[y % self.height][x % self.width]
 
     def set_cell(self, cell, x, y):
