@@ -4,6 +4,7 @@
 
 REFRESH_SPEED = 0.2
 CLEAR_EACH_FRAME = True
+CLEAR_WINDOWS = True # 'True' for Windows, 'False' for Unix-based consoles
 BUFFERED_PRINT = False
 
 GRID_WIDTH = 150
@@ -53,7 +54,8 @@ g.random_fill_fishs(
 
 
 while True:
-	if CLEAR_EACH_FRAME: os.system("cls")
+	if CLEAR_EACH_FRAME:
+		os.system("cls") if CLEAR_WINDOWS else os.system("cls")
 	print("turn = ", g.turn)
 	g.update()
 	if BUFFERED_PRINT: g.draw_console_buffered()
