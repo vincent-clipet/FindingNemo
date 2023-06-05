@@ -5,6 +5,7 @@
 # console
 REFRESH_SPEED = 2
 CLEAR_EACH_FRAME = True
+CLEAR_WINDOWS = True # 'True' for Windows, 'False' for Unix-based consoles
 BUFFERED_PRINT = False
 
 # tkinter GUI
@@ -51,7 +52,6 @@ from src.fish import Fish
 grid = GameGrid(GRID_WIDTH, GRID_HEIGHT)
 grid.random_fill_sharks(ENTITY_SHARK_COUNT, ENTITY_SHARK_ENERGY_GAIN, ENTITY_SHARK_BASE_ENERGY, ENTITY_SHARK_BIRTH_INTERVAL, ENTITY_SHARK_MAX_ENERGY)
 grid.random_fill_fishs(ENTITY_FISH_COUNT, ENTITY_FISH_BIRTH_INTERVAL, ENTITY_FISH_DEATH_AGE)
-
 
 
 
