@@ -77,6 +77,9 @@ class GameGrid():
     
     def draw_tkinter(self, gui: GuiTkinter):
         gui.update_turn(self.turn)
+        gui.canvas.delete("all")
+        gui.canvas.configure(bg="#202040")
+        print("turn = ", self.turn)
         for y in range(self.height):
             for x in range(self.width):
                 value = self.get_cell(x, y)
@@ -86,6 +89,7 @@ class GameGrid():
                     gui.draw_shark(x, y)
                 elif value.is_empty():
                     gui.draw_water(x, y)
+        # gui.canvas.pack()
 
 
     def get_cell(self, x, y) -> GameGridCell: 
