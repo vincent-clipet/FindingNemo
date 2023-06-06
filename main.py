@@ -7,14 +7,17 @@ REFRESH_SPEED = 2
 CLEAR_EACH_FRAME = True
 CLEAR_WINDOWS = True # 'True' for Windows, 'False' for Unix-based consoles
 BUFFERED_PRINT = False
-
 # tkinter GUI
-USE_GUI = True
+USE_GUI_TKINTER = False
+# PyGame GUI
+USE_GUI_PYGAME = True
+# All GUIs
 GUI_WIDTH = 1200
 GUI_HEIGHT = 800
 GUI_OFFSET_WINDOW_POSITION = -1500 # pixels, can be +-
 GUI_CELL_SIZE = 10
 GUI_UPDATE_INTERVAL = 1 # ms
+
 
 # Grid param
 GRID_WIDTH = 120
@@ -40,6 +43,9 @@ import random
 import os
 import time
 from tkinter import Canvas, Label, StringVar, Tk
+
+import pygame
+from src.gui_pygame import GuiPygame
 from src.gui_tkinter import GuiTkinter
 from src.gamegrid import GameGrid as GameGrid
 from src.shark import Shark
@@ -62,10 +68,20 @@ def loop():
     gui.window.after(GUI_UPDATE_INTERVAL, loop)
 
 
-if USE_GUI:
+if USE_GUI_TKINTER:
     gui = GuiTkinter(GUI_WIDTH, GUI_HEIGHT, GUI_CELL_SIZE, GUI_OFFSET_WINDOW_POSITION)
     loop()
     gui.window.mainloop()
+elif USE_GUI_PYGAME:
+    gui = GuiPygame(GUI_WIDTH, GUI_HEIGHT, GUI_CELL_SIZE)
+    clock = pygame.time.Clock()
+    while True:
+        grid.update()    
+        grid.draw_pygame(gui)
+        pygame.event.wait()
+        pygame.time.delay(1000)
+        # clock.tick(60)
+
 else:
     while True:
         if CLEAR_EACH_FRAME: os.system("cls")

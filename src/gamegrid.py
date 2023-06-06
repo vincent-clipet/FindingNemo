@@ -1,5 +1,8 @@
 # from .entity import Shark as Shark
 # from entity import Fish as Fish
+import pygame
+
+from .gui_pygame import GuiPygame
 from .gui_tkinter import GuiTkinter
 from .gamegridcell import GameGridCell
 from .entity import Entity
@@ -90,6 +93,22 @@ class GameGrid():
                 elif value.is_empty():
                     gui.draw_water(x, y)
         # gui.canvas.pack()
+
+
+    def draw_pygame(self, gui: GuiPygame):
+        gui.screen.fill(gui.COLOR_WATER)
+        print("turn = ", self.turn)
+        for y in range(self.height):
+            for x in range(self.width):
+                value = self.get_cell(x, y)
+                if value.is_fish():
+                    gui.draw_fish(x, y)
+                elif value.is_shark():
+                    gui.draw_shark(x, y)
+                elif value.is_empty():
+                    gui.draw_water(x, y)
+        pygame.display.flip()
+
 
 
     def get_cell(self, x, y) -> GameGridCell: 
